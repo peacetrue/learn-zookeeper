@@ -1,17 +1,36 @@
 = 简介
 
-peacetrue-template-gradle 是一个基于 gradle 的 xref:github-template.adoc[github 模板项目]。
+== 服务注册与发现
 
-包含以下内容：
+.参考
+* https://zookeeper.apache.org/doc/r3.3.5/javaExample.html
+* https://curator.apache.org/
+* https://curator.apache.org/curator-x-discovery/
+* https://docs.spring.io/spring-cloud-zookeeper/docs/2.2.3.RELEASE/reference/html/#activating
+* org.apache.zookeeper:zookeeper
+* org.apache.curator:curator-client
 
-* 基于 jdk8+
-* 使用 gradle-5.6.2
-* build.gradle中包含以下内容：
-** idea 插件，支持在 Intellij IDEA 中开发
-** maven-publish 插件，发布类库到 maven 中央仓库
-** 依赖版本管理
-*** spring-boot-dependencies:1.5.20.RELEASE
-*** peacetrue-dependencies:1.0.4-SNAPSHOT
-* 文档目录 /docs 包含以下内容：
-** ``README.graffle``设计图表
-** 一个符合 https://antora.org[antora^] 要求的文档结构
+.项目模块
+* zookeeper 注册中心ZookeeperProperties
+* learn-zookeeper-resource-server：资源服务端
+* learn-zookeeper-resource-client：资源客户端
+
+.zookeeper 数据模型
+[source%nowrap]
+----
+base path
+       |_______ service A name
+                    |__________ instance 1 id --> (serialized ServiceInstance)
+                    |__________ instance 2 id --> (serialized ServiceInstance)
+                    |__________ ...
+       |_______ service B name
+                    |__________ instance 1 id --> (serialized ServiceInstance)
+                    |__________ instance 2 id --> (serialized ServiceInstance)
+                    |__________ ...
+       |_______ ...
+----
+
+服务端启动多台，客户端通过应用名称访问服务端，应用名称自动转换成 IP 地址。http://localhost:7001
+
+== 分布式 ID
+
